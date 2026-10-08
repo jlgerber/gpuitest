@@ -1,7 +1,11 @@
 [package]
-name = "gpui-issue-tracker-ui"
+name = "issue_tracker"
 version = "0.1.0"
 edition = "2024"
+
+[[bin]]
+name = "issue-tracker"
+path = "src/main.rs"
 
 [dependencies]
 gpui-kit = "0.6"

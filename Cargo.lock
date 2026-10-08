@@ -2327,15 +2327,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "gpui-issue-tracker-ui"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "gpui-kit",
- "rust-embed",
-]
-
-[[package]]
 name = "gpui-kit"
 version = "0.6.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3447,6 +3438,15 @@ checksum = "173609498df190136aa7dea1a91db051746d339e18476eed5ca40521f02d7aa5"
 dependencies = [
  "is-docker",
  "once_cell",
+]
+
+[[package]]
+name = "issue_tracker"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "gpui-kit",
+ "rust-embed",
 ]
 
 [[package]]
