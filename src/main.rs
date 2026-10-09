@@ -12,12 +12,13 @@ use gpui_kit::component::{
 use gpui_kit::gpui::prelude::FluentBuilder;
 use gpui_kit::*;
 
-use pieces::{
-    sidebar, main_content
+use sidebar::{
+    sidebar 
 };
+use main_content::main_content;
 
-
-pub mod pieces;
+pub mod sidebar;
+pub mod main_content;
 
 #[derive(RustEmbed)]
 #[folder = "assets"]
