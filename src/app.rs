@@ -80,6 +80,7 @@ pub struct App {
 
 impl App {
 
+    /// generate a tab
     fn tab(
         &self, 
         label: &'static str, 
@@ -95,7 +96,7 @@ impl App {
             .child(label)
     }
 
-    // Create the horizontal tabs under the active issues section 
+    /// Create the horizontal tabs under the active issues section 
     fn tabs(&self) -> impl IntoElement {
         div()
             .h(px(36.0))
@@ -178,11 +179,11 @@ impl App {
                     .flex()
                     .flex_col()
                     .gap(px(1.0))
-                    .child(self.sidebar_item(IconName::Inbox, "Inbox", Some("3"), false))
-                    .child(self.sidebar_item(IconName::User, "My Issues", Some("7"), false))
-                    .child(self.sidebar_item(IconName::CircleX, "Active Issues", None, true))
-                    .child(self.sidebar_item(IconName::FolderOpen, "Projects", None, false))
-                    .child(self.sidebar_item(IconName::PanelLeft, "Views", None, false)),
+                    .child(self.sidebar_item(IconName::Inbox, "Inbox", Some(3), Navigation::Inbox, cx))
+                    .child(self.sidebar_item(IconName::User, "My Issues", Some(7), Navigation::User, cx))
+                    .child(self.sidebar_item(IconName::CircleX, "Active Issues", None, Navigation::ActiveIssues, cx))
+                    .child(self.sidebar_item(IconName::FolderOpen, "Projects", None, Navigation::FolderOpen, cx))
+                    .child(self.sidebar_item(IconName::PanelLeft, "Views", None, Navigation::PanelLeft, cx)),
             )
             .child(
                 div()
@@ -212,16 +213,23 @@ impl App {
         icon: IconName,
         label: &'static str,
         count: Option<&'static str>,
-        active: bool,
+        navigation: Navigation,,
+        cx: &Context<Self>,
     ) -> impl IntoElement {
+        let active = self.navigation == navigation;
         div()
+            id(format!("sidebar-item-{label}"))
             .h(px(31.0))
             .flex()
             .items_center()
             .px(px(8.0))
             .rounded(px(6.0))
+            .cursor_pointer()
             .when(active, |this| this.bg(rgb(0x202227)))
             .hover(|this| this.bg(rgb(0x1d2024)))
+            .on_click(cx.listener(move |this, _,_,cx| {
+                this.set_navigation(navigation, cx);
+            }))
             .child(Icon::new(icon).size(px(14.0)).text_color(if active {
                 rgb(0xd9dbe0)
             } else {
@@ -240,13 +248,13 @@ impl App {
                     div()
                         .text_size(px(10.0))
                         .text_color(rgb(0x656970))
-                        .child(count),
+                        .child(count.to_string()),
                 )
             })
     }
 
 
-
+    /// Construct a new Self 
     pub fn new() -> Self {
         Self {
             navigation: Navigation::ActiveIssues,
@@ -320,6 +328,16 @@ impl App {
                 },
             ]
         }
+    }
+
+    fn set_navigation(
+        &mut self,
+        navigation: Navigation,
+        cx: &mut Context<Self>,
+    ) {
+        self.navigation = navigation;
+        self.selected_issue = None,
+        cx.notify();
     }
 }
 
