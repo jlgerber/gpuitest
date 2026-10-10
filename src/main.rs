@@ -11,15 +11,15 @@ use gpui_kit::component::{
 };
 use gpui_kit::gpui::prelude::FluentBuilder;
 use gpui_kit::*;
-
-use sidebar::{
-    sidebar 
-};
-use main_content::main_content;
+use app::App;
 
 pub mod sidebar;
 pub mod main_content;
+pub mod app;
 
+//
+// ASSETs
+//
 #[derive(RustEmbed)]
 #[folder = "assets"]
 struct AppAssets;
@@ -45,25 +45,6 @@ impl AssetSource for AppAssets {
         Ok(files)
     }
 }
-
-struct App;
-
-impl Render for App {
-    fn render(&mut self, _window: &mut Window, _cx: &mut Context<Self>) -> impl IntoElement {
-        div()
-            .size_full()
-            .bg(rgb(0x0f1912))
-            .text_color(rgb(0xe8e9ea))
-            .child(
-                div()
-                .size_full()
-                .flex()
-                .flex_row()
-                .child(sidebar())
-                .child(main_content()),
-            )
-    }
-}
 fn main() {
     let app = gpui_kit::application().with_assets(AppAssets);
 
@@ -79,7 +60,7 @@ fn main() {
                 ..Default::default()
             },
             |window, cx| {
-                let view = cx.new(|_| App);
+                let view = cx.new(|_| App::new());
                 cx.new(|cx| Root::new(view, window, cx))
             }
         )
