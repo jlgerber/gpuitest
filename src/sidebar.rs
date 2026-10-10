@@ -14,56 +14,7 @@ use gpui_kit::component::{
 use gpui_kit::gpui::prelude::FluentBuilder;
 use gpui_kit::*;
 
-/// Left Sidebar in the main window 
-pub fn sidebar() -> impl IntoElement {
-    div()
-        .w(px(232.0))
-        .h_full()
-        .flex()
-        .flex_col()
-        .bg(rgb(0x131416))
-        .border_r_1()
-        .border_color(rgb(0x272a2f))
-        .px(px(10.0))
-        .py(px(10.0))
-        .gap(px(14.0))
-        .child(workspace_elem())
-        .child(search_box())
-        .child(
-            div()
-                .flex()
-                .flex_col()
-                .gap(px(1.0))
-                .child(sidebar_item(IconName::Inbox, "Inbox", Some("3"), false))
-                .child(sidebar_item(IconName::User, "My Issues", Some("7"), false))
-                .child(sidebar_item(IconName::CircleX, "Active Issues", None, true))
-                .child(sidebar_item(IconName::FolderOpen, "Projects", None, false))
-                .child(sidebar_item(IconName::PanelLeft, "Views", None, false)),
-        )
-        .child(
-            div()
-                .flex()
-                .flex_col()
-                .gap(px(2.0))
-                .child(
-                    div()
-                        .px(px(8.0))
-                        .pt(px(4.0))
-                        .pb(px(4.0))
-                        .text_size(px(10.0))
-                        .font_weight(FontWeight::SEMIBOLD)
-                        .text_color(rgb(0x656970))
-                        .child("PROJECTS"),
-                )
-                .child(project_item("Website", 0x7c6ff2))
-                .child(project_item("Mobile", 0x4e9f7a))
-                .child(project_item("API", 0xd9a441)),
-        )
-        .child(info())
-}
-
-
-fn project_item(label: &'static str, color: u32) -> impl IntoElement {
+pub fn project_item(label: &'static str, color: u32) -> impl IntoElement {
     div()
         .h(px(29.0))
         .flex()
@@ -82,44 +33,6 @@ fn project_item(label: &'static str, color: u32) -> impl IntoElement {
                 .child(label),
         )
 }
-
-pub fn sidebar_item(
-    icon: IconName,
-    label: &'static str,
-    count: Option<&'static str>,
-    active: bool,
-) -> impl IntoElement {
-    div()
-        .h(px(31.0))
-        .flex()
-        .items_center()
-        .px(px(8.0))
-        .rounded(px(6.0))
-        .when(active, |this| this.bg(rgb(0x202227)))
-        .hover(|this| this.bg(rgb(0x1d2024)))
-        .child(Icon::new(icon).size(px(14.0)).text_color(if active {
-            rgb(0xd9dbe0)
-        } else {
-            rgb(0x777b83)
-        }))
-        .child(
-            div()
-                .ml(px(9.0))
-                .flex_1()
-                .text_size(px(12.0))
-                .text_color(if active { rgb(0xe0e1e4) } else {rgb(0x858990)})
-                .child(label),
-        )
-        .when_some(count, |this,count|{
-            this.child(
-                div()
-                    .text_size(px(10.0))
-                    .text_color(rgb(0x656970))
-                    .child(count),
-            )
-        })
-}
-
 
 pub fn workspace_elem() -> impl IntoElement {
     div()
@@ -146,7 +59,7 @@ pub fn workspace_elem() -> impl IntoElement {
 
 }
 
-fn info() -> impl IntoElement {
+pub fn info() -> impl IntoElement {
     div()
         .mt_auto()
         .h(px(40.0))
@@ -185,7 +98,7 @@ fn info() -> impl IntoElement {
         )
 }
 
-fn search_box() -> impl IntoElement {
+pub  fn search_box() -> impl IntoElement {
     div()
         .h(px(32.0))
         .flex()
